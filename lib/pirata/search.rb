@@ -29,7 +29,7 @@ module Pirata
     end
 
     # Return the n page results of a search, assuming it is multipage
-  def search_page(page)
+    def search_page(page)
       raise "Search must be multipage to search pages" if !multipage?
       raise "Page must be a valid, positive integer" if page.class != Fixnum || page < 0
       raise "Invalid page range" if page > @pages
@@ -46,8 +46,8 @@ module Pirata
     end
 
     # Return an array of the 30 most recent Torrents
-    def self.recent
-      url = Pirata.config[:base_url] + '/recent'
+    def self.recent(category = nil)
+      url = Pirata.config[:base_url] + (category ? "/browse/#{URI.escape(category.to_s)}" : '/recent')
       html = self.parse_html(url)
       Pirata::Search::parse_search_page(html)
     end
